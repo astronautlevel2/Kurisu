@@ -151,10 +151,20 @@ class Extras:
                 await self.bot.send_message(author, "Access to #eventchat granted.")
         else:
             await self.bot.send_message(author, "{} is not a valid toggleable channel.".format(channelname))
+
+
+    # helper method to ensure certain commands can only be ran in bot.botcmds_channel
+    async def verify_botcmds(self, ctx):
+        if ctx.message.channel != self.bot.botcmds_channel:
+            await self.bot.send_message(ctx.message.author, "`{}` can only be ran in {}".format(ctx.prefix + ctx.invoked_with, self.bot.botcmds_channel.mention))
+            await self.bot.delete_message(ctx.message)
+            return False
+        return True
     
     @commands.command(pass_context=True)
     async def rainbow(self, ctx):
         """Colorful"""
+        if not await self.verify_botcmds(ctx): return
         month = datetime.date.today().month
         if month == 6:
             member = ctx.message.author
@@ -171,6 +181,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def norainbow(self, ctx):
         """Tired of it."""
+        if not await self.verify_botcmds(ctx): return
         member = ctx.message.author
         if member.nick and member.nick[-1] == "🌈":
             await self.bot.say("Your nickname is now \"{}\"!".format(member.display_name[0:-1].strip()))
@@ -183,6 +194,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def spooky(self, ctx):
         """Spookybrew"""
+        if not await self.verify_botcmds(ctx): return
         month = datetime.date.today().month
         if month == 10:
             member = ctx.message.author
@@ -199,6 +211,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def nospooky(self, ctx):
         """Tired of it."""
+        if not await self.verify_botcmds(ctx): return
         member = ctx.message.author
         if member.nick and member.nick[-1] == "🎃":
             await self.bot.say("Your nickname is now \"{}\"!".format(member.display_name[0:-1].strip()))
@@ -211,6 +224,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def turkey(self, ctx):
         """Turkeybrew"""
+        if not await self.verify_botcmds(ctx): return
         month = datetime.date.today().month
         if month == 11:
             member = ctx.message.author
@@ -227,6 +241,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def noturkey(self, ctx):
         """Tired of it."""
+        if not await self.verify_botcmds(ctx): return
         member = ctx.message.author
         if member.nick and member.nick[-1] == "🦃":
             await self.bot.say("Your nickname is now \"{}\"!".format(member.display_name[0:-1].strip()))
@@ -239,6 +254,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def xmasthing(self, ctx):
         """It's xmas time."""
+        if not await self.verify_botcmds(ctx): return
         month = datetime.date.today().month
         if month == 12:
             member = ctx.message.author
@@ -255,6 +271,7 @@ class Extras:
     @commands.command(pass_context=True)
     async def noxmasthing(self, ctx):
         """Tired of it."""
+        if not await self.verify_botcmds(ctx): return
         member = ctx.message.author
         if member.nick and member.nick[-1] == "🎄":
             await self.bot.say("Your nickname is now \"{}\"!".format(member.display_name[0:-1].strip()))
